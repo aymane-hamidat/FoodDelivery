@@ -1,0 +1,142 @@
+<!--refuse application-->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':applicationRefusePopupDisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Refuse application - {{editedapplication.name}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="refuse();
+        closeRefuseItemPopup();
+         ">
+          Reject
+        </button>
+        <button type="button" class="btn btn-danger"
+                (click)="closeRefuseItemPopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--delete category-->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':applicationAcceptPopupDisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Accept Application - {{editedapplication.name}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="valide();
+        closeAcceptItemPopup();
+         ">
+          Accept
+        </button>
+        <button type="button" class="btn btn-danger"
+                (click)="closeAcceptItemPopup()">
+          Close
+        </button>
+      </div>
+    </div>q
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':applicationFinishPopupDisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Validate Application - {{editedapplication.name}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="finish();
+        closeFinishItemPopup();
+         ">
+          Validate
+        </button>
+        <button type="button" class="btn btn-danger"
+                (click)="closeFinishItemPopup()">
+          Close
+        </button>
+      </div>
+    </div>q
+  </div>
+</div>
+
+
+<div class="container" style="margin-top: 2%">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="row">
+        <div>
+          <br>
+          <div class="search">
+            <div class="row">
+              <div class="col-md-12">
+                <div>
+                  <div class="search-2"><i class='bx bxs-map'></i>
+                    <input type="text" placeholder="Email,Name,Cin search ..." style="background: #535353" #search>
+                    <button *ngIf="name==''" (click)="name=search.value.toString();getData(0)">Search</button>
+                    <button *ngIf="name!=''" (click)="name='';search.value='';getData(0)">Clear</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body table-responsive">
+      <table class="table center">
+        <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Picture</th>
+          <th>Number</th>
+          <th>City</th>
+          <th>Vehicule</th>
+          <th>Date d'application</th>
+          <th>Etat</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let application of allaplications;index as i">
+          <td>{{i + 1}}</td>
+          <td>{{application.name}}</td>
+          <td>{{application.email}}</td>
+          <td><img id="myimage" [src]="getImage(application.img)  " width="120px" height="80px"></td>
+          <td>{{application.number}}</td>
+          <td>{{application.city}}</td>
+          <td>{{application.vehiculeType}}</td>
+          <td>{{application.date}}</td>
+          <td>{{application.etat}}</td>
+          <td width="150" style="text-align: center">
+            <ul class="action-list">
+              <li *ngIf="application.etat=='Processing'" (click)="openAcceptItemPopup(application)"><a class="btn btn-sm btn-success"><i class="fa fa-check"></i></a></li>&nbsp;
+              <li *ngIf="application.etat=='Processing'"  (click)="openRefuseItemPopup(application)"><a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></li>
+              <li *ngIf="application.etat=='Accepted'" (click)="openFinishItemPopup(application)" ><a class="btn btn-sm btn-success"><i class="fa fa-check"></i></a></li>&nbsp;
+              <li *ngIf="application.etat=='Accepted'"(click)="openContract(application)"  ><a class="btn btn-sm btn-dark"><i class="fa fa-print"></i></a></li>
+            </ul>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-footer">
+      <div class="row">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" *ngIf="currentpage>0"
+                                     (click)="getData(currentpage-1)">Previous</a></li>
+            <li class="page-item" *ngFor="let i of totalElements" (click)="getData(i)"><a
+              class="page-link">{{i + 1}}</a></li>
+            <li class="page-item"><a class="page-link" *ngIf="currentpage<maxpages-1" (click)="getData(currentpage+1)">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,152 @@
+<!--edit category-->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':categoryEditPopupDisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Category - {{editedCategory.title}}</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="categoryname">Category Name</label>
+            <input type="email" class="form-control" id="categoryname" aria-describedby="emailHelp"
+                   value="{{editedCategory.title}}" #editedcategoryname>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary"
+                (click)="editedCategory.title=editedcategoryname.value;
+                saveCategory(editedCategory);
+                closeEditItemPopup()">
+          Save
+        </button>
+        <button type="button" class="btn btn-danger"
+                (click)="closeEditItemPopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--add category-->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':categoryAddPopupDisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Category</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="categoryname">Category Name</label>
+            <input type="email" class="form-control" id="categoryname" aria-describedby="emailHelp"
+                   placeholder="Add a category name..." #newcategoryname>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" (click)="addCategory(newcategoryname.value);
+        newcategoryname.value='';
+        closeAddItemPopup();
+" class="btn btn-primary">
+          Save
+        </button>
+        <button type="button" class="btn btn-danger"
+                (click)="closeAddItemPopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--delete category-->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':categoryDeletePopupDisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Category - {{deletedCategory.title}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="deleteCategory(deletedCategory);
+        closeDeleteItemPopup();
+         ">
+          Delete
+        </button>
+        <button type="button" class="btn btn-danger"
+                (click)="closeDeleteItemPopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-sm-12 col-xs-12">
+          <a class="btn btn-sm btn-primary -pull-right" (click)="openAddItemPopup()"><i class="fa fa-plus-circle"></i>
+            Add New Category</a>
+        </div>
+        <div>
+          <br>
+          <div class="search">
+            <div class="row">
+              <div class="col-md-12">
+                <div>
+                  <div class="search-2"><i class='bx bxs-map'></i>
+                    <input type="text" placeholder="Category Title" #search>
+                    <button *ngIf="title==''" (click)="title=search.value.toString();getData(0)">Search</button>
+                    <button *ngIf="title!=''" (click)="title='';search.value='';getData(0)">Clear</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body table-responsive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let category of allcategories;index as i">
+          <td>{{i + 1}}</td>
+          <td>{{category.title}}</td>
+          <td>
+            <ul class="action-list">
+              <li routerLink="/admin/categories/details/{{category.id}}"><a class="btn btn-sm btn-success"><i class="fa fa-search"></i></a>
+              </li>&nbsp;
+              <li (click)="openEditItemPopup(category)"><a class="btn btn-primary"><i class="fa fa-pencil-alt" ></i></a>
+              </li> &nbsp;
+              <li (click)="openDeleteItemPopup(category)"><a class="btn btn-danger"><i class="fa fa-times"></i></a></li>&nbsp;
+            </ul>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-footer">
+      <div class="row">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" *ngIf="currentpage>0"
+                                     (click)="getData(currentpage-1)">Previous</a></li>
+            <li class="page-item" *ngFor="let i of totalElements" (click)="getData(i)"><a
+              class="page-link">{{i + 1}}</a></li>
+            <li class="page-item"><a class="page-link" *ngIf="currentpage<maxpages-1" (click)="getData(currentpage+1)">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
